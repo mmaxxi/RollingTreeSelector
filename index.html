@@ -1,0 +1,56 @@
+
+<!DOCTYPE HTML>
+<html lang="ru">
+	<head>
+		<meta charset="windows-1251">
+		<title>Demo: Custom Widget</title>
+		<!-- Configure Dojo -->
+		<script>
+			 var dojoConfig = (function(){
+				var base = location.href.split("/");
+				base.pop();
+				base = base.join("/");
+				return {
+					async: true,
+					isDebug: true,
+					packages: [{
+						name: "custom",
+						location: base + "/custom"
+					}]
+				};
+			})();
+		</script>
+		<!-- Load up Dojo -->
+		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojo/dojo.js">
+		</script>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	</head>
+	<body>
+		<h1>Demo: Custom Widget</h1>
+		<div id="Container"></div>
+		<script>
+			// Bring in our custom widget
+			require(["dojo/_base/xhr", "dojo/dom", "dojo/_base/array", /*"custom/RollingTreeSelector", */"dojox/widget/RollingList", "dojo/domReady!"],
+				function(xhr, dom, arrayUtil, RollingList){
+					// Load up our authors
+					var def = xhr.get({
+						url: "input.json",
+						handleAs: "json"
+					});
+					
+					var Container = dom.byId("Container");
+					var widget = new RollingList(input).placeAt(Container);
+					
+					// Once ready, process the authors
+					/*def.then(function(input){
+						// Get a reference to our container div
+						var Container = dom.byId("Container");
+
+						arrayUtil.forEach(input, function(node){							
+							var widget = new RollingTreeSelector(node).placeAt(Container);
+						});
+					});*/
+			});
+		</script>
+	</body>
+</html>
