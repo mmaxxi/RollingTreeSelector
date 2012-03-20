@@ -38,8 +38,13 @@
 						handleAs: "json"
 					});
 					
-					var Container = dom.byId("Container");
-					var widget = new RollingList(input).placeAt(Container);
+					def.then(function(input){
+						var Container = dom.byId("Container");
+						var widget = new RollingList(input).placeAt(Container);
+						widget.startup();
+					});
+					
+
 					
 					// Once ready, process the authors
 					/*def.then(function(input){
