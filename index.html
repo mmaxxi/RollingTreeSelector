@@ -21,40 +21,72 @@
 			})();
 		</script>
 		<!-- Load up Dojo -->
-		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojo/dojo.js">
+		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js">
 		</script>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dijit/themes/claro/claro.css">
+	<style>
+		@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojox/widget/RollingList/RollingList.css";
+	</style>
 	</head>
-	<body>
+	<body class="claro">
 		<h1>Demo: Custom Widget</h1>
 		<div id="Container"></div>
 		<script>
 			// Bring in our custom widget
-			require(["dojo/_base/xhr", "dojo/dom", "dojo/_base/array", /*"custom/RollingTreeSelector", */"dojox/widget/RollingList", "dojo/domReady!"],
-				function(xhr, dom, arrayUtil, RollingList){
-					// Load up our authors
-					var def = xhr.get({
-						url: "input.json",
-						handleAs: "json"
-					});
-					
-					def.then(function(input){
-						var Container = dom.byId("Container");
-						var widget = new RollingList(input).placeAt(Container);
-						widget.startup();
-					});
-					
-
-					
-					// Once ready, process the authors
-					/*def.then(function(input){
-						// Get a reference to our container div
-						var Container = dom.byId("Container");
-
-						arrayUtil.forEach(input, function(node){							
-							var widget = new RollingTreeSelector(node).placeAt(Container);
-						});
-					});*/
+			require(["dojo/_base/xhr", "dojo/dom", "dojo/_base/array", /*"custom/RollingTreeSelector", */"dojox/widget/RollingList", "dojo/data/ItemFileReadStore", "dijit/MenuItem", "dojo/domReady!"],
+				function(xhr, dom, arrayUtil, RollingList, ItemFileReadStore, MenuItem){			
+					var input = {
+					  'identifier': 'name',
+					  'label': 'name',
+					  'items': [
+						{ 'name':'Africa', 'type':'continent', 'children':[
+						  { 'name':'Egypt', 'type':'country' },
+						  { 'name':'Kenya', 'type':'country', 'children':[
+							{ 'name':'Nairobi', 'type':'city' },
+							{ 'name':'Mombasa', 'type':'city' } ]
+						  },
+						  { 'name':'Sudan', 'type':'country', 'children':
+							{ 'name':'Khartoum', 'type':'city' }
+						  } ]
+						},
+						{ 'name':'Asia', 'type':'continent', 'children':[
+						  { 'name':'China', 'type':'country' },
+						  { 'name':'India', 'type':'country' },
+						  { 'name':'Russia', 'type':'country' },
+						  { 'name':'Mongolia', 'type':'country' } ]
+						},
+						{ 'name':'Australia', 'type':'continent', 'population':'21 million', 'children':
+						  { 'name':'Commonwealth of Australia', 'type':'country', 'population':'21 million'}
+						},
+						{ 'name':'Europe', 'type':'continent', 'children':[
+						  { 'name':'Germany', 'type':'country' },
+						  { 'name':'France', 'type':'country' },
+						  { 'name':'Spain', 'type':'country' },
+						  { 'name':'Italy', 'type':'country' } ]
+						},
+						{ 'name':'North America', 'type':'continent', 'children':[
+						  { 'name':'Mexico', 'type':'country',  'population':'108 million', 'area':'1,972,550 sq km', 'children':[
+							{ 'name':'Mexico City', 'type':'city', 'population':'19 million', 'timezone':'-6 UTC'},
+							{ 'name':'Guadalajara', 'type':'city', 'population':'4 million', 'timezone':'-6 UTC' } ]
+						  },
+						  { 'name':'Canada', 'type':'country', 'population':'33 million', 'area':'9,984,670 sq km', 'children':[
+							{ 'name':'Ottawa', 'type':'city', 'population':'0.9 million', 'timezone':'-5 UTC'},
+							{ 'name':'Toronto', 'type':'city', 'population':'2.5 million', 'timezone':'-5 UTC' }]
+						  },
+						  { 'name':'United States of America', 'type':'country' } ]
+						},
+						{ 'name':'South America', 'type':'continent', 'children':[
+						  { 'name':'Brazil', 'type':'country', 'population':'186 million' },
+						  { 'name':'Argentina', 'type':'country', 'population':'40 million' } ]
+						}
+					  ]
+					};			
+					var Container = dom.byId("Container");
+					var store = new ItemFileReadStore({data: input});
+					var widget = new RollingList({ store: store, query:{type:'continent'} });
+					widget.placeAt(Container);
+					widget.startup();
 			});
 		</script>
 	</body>
