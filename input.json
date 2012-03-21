@@ -1,4 +1,4 @@
-[
+{
   'identifier': 'name',
   'label': 'name',
   'items': [
@@ -43,4 +43,4 @@
       { 'name':'Argentina', 'type':'country', 'population':'40 million' } ]
     }
   ]
-]
+}
